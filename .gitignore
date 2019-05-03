@@ -1,0 +1,17 @@
+# Environment Variables
+.env
+nohup.out
+
+# Certificates
+*.pem
+*.cert
+
+# Mac File System Artifacts
+.DS_Store
+
+# Node.js Dependencies
+node_modules
+
+# ** Content **
+# *.md
+

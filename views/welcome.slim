@@ -1,0 +1,10 @@
+doctype html
+html[amp]
+    == slim :"global_partials/head",
+            locals: { title: title, style: style, url: url }
+    body
+        .main
+            - content.each_with_index do |part, i|
+                div[id="content-#{i}"]
+                    == part
+

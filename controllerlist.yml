@@ -1,0 +1,15 @@
+---
+-
+  file: custom
+  name: CustomController
+  path: /
+# -
+#   file: content
+#   name: ContentController
+#   path: /content
+# -
+#   file: search
+#   name: SearchController
+#   path: /search
+...
+

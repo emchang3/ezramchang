@@ -1,0 +1,10 @@
+---
+-
+  name: welcome
+  path: /
+  title: EZRA M. CHANG
+  content:
+    - welcome.md
+    - links.md
+...
+

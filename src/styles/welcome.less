@@ -1,0 +1,37 @@
+@import "_common";
+
+html, body {
+    .base-page;
+}
+
+.main {
+    @center-vert();
+    @full-page();
+
+    h1 {
+        @fs2-5();
+        @fw300();
+        @std-margin();
+
+        border-bottom: 1px solid grey;
+        padding-bottom: 0.2em;
+        text-align: center;
+    }
+
+    #content-1 {
+        @std-padding();
+
+        display: flex;
+
+        p {
+            @std-margin();
+
+            padding-right: 1em;
+        }
+
+        p:last-child {
+            padding: 0;
+        }
+    }
+}
+
