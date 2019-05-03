@@ -16,9 +16,11 @@ class CustomController < Sinatra::Base
             folder = "#{$root}/#{name}"
 
             content = route["content"].map { |section| "#{folder}/#{section}" }
+            fallback = route["fallback"].map { |section| "#{folder}/#{section}" }
 
             slim name.to_sym, locals: {
                 content: ContentHelpers.parse_md(content),
+                fallback: ContentHelpers.parse_md(fallback),
                 style: ContentHelpers.load_css(name),
                 title: route["title"],
                 url: request.url

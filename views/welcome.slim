@@ -7,4 +7,7 @@ html[amp]
             - content.each_with_index do |part, i|
                 div[id="content-#{i}"]
                     == part
-
+            noscript
+                - fallback.each_with_index do |part, i|
+                    div[id="fallback-#{i}"]
+                        == part

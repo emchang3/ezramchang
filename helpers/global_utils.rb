@@ -31,7 +31,7 @@ module GlobalUtils
         AMP
 
         $amp_static_header = <<~HEADER
-            <meta http-equiv="Content-Type" content="text/html; charset="utf-8">
+            <meta content="text/html" charset="utf-8">
             <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
             <script async src="https://cdn.ampproject.org/v0.js"></script>
         HEADER

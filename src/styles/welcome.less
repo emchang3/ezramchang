@@ -18,9 +18,11 @@ html, body {
         text-align: center;
     }
 
-    #content-1 {
-        @std-padding();
+    #content-0 {
+        padding-bottom: 1em;
+    }
 
+    #content-1, #fallback-0 {
         display: flex;
 
         p {
@@ -33,5 +35,10 @@ html, body {
             padding: 0;
         }
     }
-}
 
+    #fallback-0 {
+        img {
+            width: 48px;
+        }
+    }
+}

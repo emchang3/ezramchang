@@ -6,5 +6,7 @@
   content:
     - welcome.md
     - links.md
+  fallback:
+    - fallback.md
 ...
 
