@@ -20,6 +20,7 @@ class CustomController < Sinatra::Base
 
             slim name.to_sym, locals: {
                 content: ContentHelpers.parse_md(content),
+                description: route["description"],
                 fallback: ContentHelpers.parse_md(fallback),
                 style: ContentHelpers.load_css(name),
                 title: route["title"],
