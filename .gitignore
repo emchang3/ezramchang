@@ -3,8 +3,10 @@
 nohup.out
 
 # Certificates
-*.pem
 *.cert
+*.crt
+*.key
+*.pem
 
 # Mac File System Artifacts
 .DS_Store
