@@ -33,6 +33,10 @@ class CustomController < Sinatra::Base
         send_file File.join(settings.public_folder, "robots.txt")
     end
 
+    get "/favicon.ico" do
+        send_file File.join(settings.public_folder, "images", "favicon.ico")
+    end
+
     not_found do
         slim :notfound, locals: { **ContentHelpers.nf_404, url: request.url }
     end
