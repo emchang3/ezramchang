@@ -41,7 +41,10 @@ Specific: `docker run -p 4567:4567 ezchang/ezramchang:0.0.6`
 
 ### Nginx
 
+#### Restart/Reload service
+
 `service nginx restart`
+`service nginx reload`
 
 ## Other Documentation
 
