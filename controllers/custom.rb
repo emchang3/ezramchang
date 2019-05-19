@@ -29,6 +29,10 @@ class CustomController < Sinatra::Base
         end
     end
 
+    get "/robots.txt" do
+        send_file File.join(settings.public_folder, "robots.txt")
+    end
+
     not_found do
         slim :notfound, locals: { **ContentHelpers.nf_404, url: request.url }
     end
