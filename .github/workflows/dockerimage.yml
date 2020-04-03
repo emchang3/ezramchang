@@ -19,9 +19,7 @@ jobs:
       run: docker build . --file Dockerfile --tag ezchang/ezramchang:$(git rev-parse HEAD)
     - name: Publish the Docker image
       run: docker push ezchang/ezramchang
-    - name: Set permissions on SSH files
-      run: chmod 600 ~/.ssh/id_rsa
     - name: Copy private key
-      run: echo ${{ secrets.PRIVATE_KEY }} > ~/.ssh/id_rsa
+      run: echo ${{ secrets.PRIVATE_KEY }} > ~/id_rsa
     - name: Test SSH
-      run: ssh ${{ secrets.USER }}@${{ secrets.HOST }} 'ls -la'
+      run: ssh -i ~/id_rsa ${{ secrets.USER }}@${{ secrets.HOST }} 'ls -la'
