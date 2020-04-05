@@ -20,6 +20,8 @@ jobs:
     - name: Publish the Docker image
       run: docker push ezchang/ezramchang
     - name: Copy private key
-      run: echo ${{ secrets.PRIVATE_KEY }} > ~/id_rsa
+      run: echo "${PRIVATE_KEY}" > ~/id_rsa
+      env:
+        PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
     - name: Test SSH
       run: ssh -i ~/id_rsa ${{ secrets.USER }}@${{ secrets.HOST }} 'ls -la'
