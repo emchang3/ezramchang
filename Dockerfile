@@ -7,6 +7,7 @@ WORKDIR /Users/EMC3/Projects/ezramchang
 COPY . .
 
 RUN bundle install
+RUN npx build
 
 EXPOSE 4567
 
