@@ -19,11 +19,3 @@ jobs:
       run: docker build . --file Dockerfile --tag ezchang/ezramchang:$(git rev-parse HEAD)
     - name: Publish the Docker image
       run: docker push ezchang/ezramchang
-    - name: Test SSH
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.USER }}
-        key: ${{ secrets.PRIVATE_KEY }}
-        script: ls -la
-
