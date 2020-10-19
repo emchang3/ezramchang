@@ -7,7 +7,8 @@ WORKDIR /Users/EMC3/Projects/ezramchang
 COPY . .
 
 RUN bundle install
-RUN npx gulp shrink
+RUN npm ci
+RUN npm run build
 
 EXPOSE 4567
 
