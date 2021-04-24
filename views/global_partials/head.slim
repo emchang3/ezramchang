@@ -1,13 +1,12 @@
 head
-    meta[name="description" content="#{description}"]
-    == $amp_static_header
-    == $amp_boiler
+  meta[name="description" content="#{description}"]
+  == $amp_static_header
+  == $amp_boiler
 
-    title = title
-    link[rel="canonical" href="#{url}"]
-    link[href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet"]
-    link[rel="icon" type="image/x-icon" href="/favicon.ico"]
-    link[rel="icon" type="image/ico" href="/favicon.ico"]
-    style[amp-custom]
-        == style
-
+  title = title
+  link[rel="canonical" href="#{url}"]
+  link[href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet"]
+  link[rel="icon" type="image/x-icon" href="/favicon.ico"]
+  link[rel="icon" type="image/ico" href="/favicon.ico"]
+  style[amp-custom]
+    == style
