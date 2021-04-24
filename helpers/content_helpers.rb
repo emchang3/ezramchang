@@ -1,175 +1,174 @@
-puts "	Helper: Content ---"
+# frozen_string_literal: true
 
-require "redcarpet"
+puts "\tHelper: Content ---"
+
+require 'redcarpet'
 
 module ContentHelpers
+  CARPET = Redcarpet::Markdown.new(
+    Redcarpet::Render::HTML.new({
+                                  hard_wrap: true,
+                                  highlight: true
+                                })
+  )
 
-    CARPET = Redcarpet::Markdown.new(
-        Redcarpet::Render::HTML.new({
-            hard_wrap: true,
-            highlight: true
-        })
-    )
-
-    def self.filter_content(content, params)
-        term = params["term"]
-        if !term.nil? && term.length > 2
-            content.reject! do |c|
-                post = `cat #{c}`
-                !post.match?(Regexp.new(term, true))
-            end
-        end
-    
-        yyyy = params["year"]
-        if !yyyy.nil? && yyyy.length == 4
-            content.reject! { |c| File::Stat.new(c).mtime.year != yyyy.to_i }
-        end
-    
-        mm = params["month"]
-        if !mm.nil? && mm.length == 2
-            content.reject! { |c| File::Stat.new(c).mtime.month != mm.to_i }
-        end
-    
-        dd = params["day"]
-        if !dd.nil? && dd.length == 2
-            content.reject! { |c| File::Stat.new(c).mtime.day != dd.to_i }
-        end
-    end
-    
-    def self.get_content(contentDir)
-        all = Dir.glob("#{contentDir}/*.md")
-        classified = YAML.load_file($banlist)
-    
-        all - classified
+  def self.filter_content(content, params)
+    term = params['term']
+    if !term.nil? && term.length > 2
+      content.select! do |c|
+        post = `cat #{c}`
+        post.match?(Regexp.new(term, true))
+      end
     end
 
-    def self.get_content_dirs
-        YAML.load_file($contentDirs)
+    yyyy = params['year']
+    if !yyyy.nil? && yyyy.length == 4
+      content.select! { |c| File::Stat.new(c).mtime.year == yyyy.to_i }
     end
 
-    def self.get_post(contentDir, title)
-        content = self.get_content(contentDir)
-
-        post = "#{contentDir}/#{title}.md"
-
-        content.include?(post) ? [ post ] : []
+    mm = params['month']
+    if !mm.nil? && mm.length == 2
+      content.select! { |c| File::Stat.new(c).mtime.month == mm.to_i }
     end
 
-    def self.get_searchdest(params)
-        parts = {}
+    dd = params['day']
+    if !dd.nil? && dd.length == 2
+      content.select! { |c| File::Stat.new(c).mtime.day == dd.to_i }
+    end
+  end
 
-        term = params["term"]
+  def self.get_content(contentDir)
+    all = Dir.glob("#{contentDir}/*.md")
+    classified = YAML.load_file($banlist)
 
-        parts["term"] = self.sanitize_term(term) if !term.nil? && term != ""
+    all - classified
+  end
 
-        whenp = params["when"]
-        specificity = params["specificity"]
+  def self.get_content_dirs
+    YAML.load_file($contentDirs)
+  end
 
-        if !whenp.nil? && whenp != "" && !specificity.nil? && specificity != ""
-            begin
-                whenRange = Date.parse(whenp)
-                year = "year=#{whenRange.strftime("%Y")}"
-                month = "month=#{whenRange.strftime("%m")}"
-                day = "day=#{whenRange.strftime("%d")}"
+  def self.get_post(contentDir, title)
+    content = get_content(contentDir)
 
-                parts["year"] = year if specificity.match?(/^(year|month|day)$/)
-                parts["month"] = month if specificity.match?(/^(month|day)$/)
-                parts["day"] = day if specificity == "day"
-            rescue => exception
-                # TODO: Implement exception handling.
-                # This block just serves to swallow the exception.
-            end
-        end
+    post = "#{contentDir}/#{title}.md"
 
-        return self.mp_eu("search/results", parts, {})
+    content.include?(post) ? [post] : []
+  end
+
+  def self.get_searchdest(params)
+    parts = {}
+
+    term = params['term']
+
+    parts['term'] = sanitize_term(term) if !term.nil? && term != ''
+
+    whenp = params['when']
+    specificity = params['specificity']
+
+    if !whenp.nil? && whenp != '' && !specificity.nil? && specificity != ''
+      begin
+        whenRange = Date.parse(whenp)
+        year = "year=#{whenRange.strftime('%Y')}"
+        month = "month=#{whenRange.strftime('%m')}"
+        day = "day=#{whenRange.strftime('%d')}"
+
+        parts['year'] = year if specificity.match?(/^(year|month|day)$/)
+        parts['month'] = month if specificity.match?(/^(month|day)$/)
+        parts['day'] = day if specificity == 'day'
+      rescue StandardError => e
+        # TODO: Implement exception handling.
+        # This block just serves to swallow the exception.
+      end
     end
 
-    <<~load_css
-        This function reads and returns the contents of a CSS file as a string.
-        Its return value gets stored in a variable for ease of interpolation in
-        templates.
-    load_css
+    mp_eu('search/results', parts, {})
+  end
 
-    def self.load_css(filename)
-        `cat #{$style_root}/#{filename}.css`
+  <<~load_css
+    This function reads and returns the contents of a CSS file as a string.
+    Its return value gets stored in a variable for ease of interpolation in
+    templates.
+  load_css
+
+  def self.load_css(filename)
+    `cat #{$style_root}/#{filename}.css`
+  end
+
+  # Merge Params, Encode URL.
+  def self.mp_eu(path, params, replacement)
+    newParams = {}
+    params.each { |k, v| newParams[k] = v }
+    replacement.each { |i, j| newParams[i] = j }
+    encoded = URI.encode_www_form(newParams)
+
+    "#{path}?#{encoded}"
+  end
+
+  def self.nf_404
+    {
+      title: '404: Not Found',
+      style: load_css('notfound')
+    }
+  end
+
+  def self.paginate(content, params, url)
+    pageParam = params['page'].to_i
+
+    page = pageParam != 0 ? pageParam : 1
+    pages = (content.length / 5.0).ceil
+
+    firstIndex = (page - 1) * 5
+    lastIndex = page * 5 - 1
+
+    path = URI(url).path
+    pageUrls = [nil, nil, nil, nil]
+
+    if page > 1
+      pageUrls[0] = mp_eu(path, params, { 'page' => '1' })
+
+      prev = (page - 1).to_s
+      pageUrls[1] = mp_eu(path, params, { 'page' => prev })
     end
 
-    # Merge Params, Encode URL.
-    def self.mp_eu(path, params, replacement)
-        newParams = {}
-        params.each { |k, v| newParams[k] = v }
-        replacement.each { |i, j| newParams[i] = j }
-        encoded = URI.encode_www_form(newParams)
-        
-        "#{path}?#{encoded}"
+    if page < pages
+      foll = (page + 1).to_s
+      pageUrls[2] = mp_eu(path, params, { 'page' => foll })
+
+      pageUrls[3] = mp_eu(path, params, { 'page' => pages.to_s })
     end
 
-    def self.nf_404
-        {
-            title: "404: Not Found",
-            style: self.load_css("notfound")
-        }
+    {
+      content: parse_md(content[firstIndex..lastIndex]),
+      page: page,
+      pages: pages,
+      pageUrls: pageUrls
+    }
+  end
+
+  <<~parse_md
+    This function takes a list of filenames, reads their contents, and
+    utilizes the Redcarpet gem to parse them into HTML.
+  parse_md
+
+  def self.parse_md(filenames)
+    filenames.map do |filename|
+      content = `cat #{filename}`
+      CARPET.render(content)
     end
-    
-    def self.paginate(content, params, url)
-        pageParam = params["page"].to_i
-    
-        page = pageParam != 0 ? pageParam : 1
-        pages = (content.length / 5.0).ceil
-        
-        firstIndex = (page - 1) * 5
-        lastIndex = page * 5 - 1
-    
-        path = URI(url).path
-        pageUrls = [ nil, nil, nil, nil ]
-        
-        if page > 1
-            pageUrls[0] = self.mp_eu(path, params, { "page" => "1" })
-            
-            prev = (page - 1).to_s
-            pageUrls[1] = self.mp_eu(path, params, { "page" => prev })
-        end
-    
-        if page < pages
-            foll = (page + 1).to_s
-            pageUrls[2] = self.mp_eu(path, params, { "page" => foll })
+  end
 
-            pageUrls[3] = self.mp_eu(path, params, { "page" => pages.to_s })
-        end
-    
-        {
-            content: self.parse_md(content[firstIndex..lastIndex]),
-            page: page,
-            pages: pages,
-            pageUrls: pageUrls
-        }
-    end
+  def self.sanitize_term(path)
+    bannedChars = YAML.load_file($bannedChars)
 
-    <<~parse_md
-        This function takes a list of filenames, reads their contents, and
-        utilizes the Redcarpet gem to parse them into HTML.
-    parse_md
+    processed = path
+    bannedChars.each { |char| processed = path.gsub(char, '') }
 
-    def self.parse_md(filenames)
-        filenames.map do |filename|
-            content = `cat #{filename}`
-            CARPET.render(content)
-        end
-    end
+    processed
+  end
 
-    def self.sanitize_term(path)
-        bannedChars = YAML.load_file($bannedChars)
-
-        processed = path
-        bannedChars.each { |char| processed = path.gsub(char, "") }
-
-        return processed
-    end
-    
-    def self.time_sort(content)
-        content.sort_by! { |c| File::Stat.new(c).mtime }
-        content.reverse!
-    end
-
+  def self.time_sort(content)
+    content.sort_by! { |c| File::Stat.new(c).mtime }
+    content.reverse!
+  end
 end
-

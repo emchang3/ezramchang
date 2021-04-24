@@ -5,13 +5,14 @@
   "author": "your-name",
   "license": "MIT",
   "dependencies": {
-    "gulp": "^4.0.0",
-    "gulp-clean-css": "3.10.0",
+    "gulp": "^4.0.2",
+    "gulp-clean-css": "^4.3.0",
     "gulp-less": "^4.0.0",
     "gulp-uglify": "^3.0.0",
     "pump": "3.0.0"
   },
   "scripts": {
-    "build": "gulp shrink"
+    "build": "gulp shrink",
+    "watch": "gulp"
   }
 }

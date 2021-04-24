@@ -1,6 +1,5 @@
 ---
--
-  name: welcome
+- name: welcome
   path: /
   title: EZRA M. CHANG
   description: Ezra M. Chang -- Chicagoland-based software engineer, currently at Expedia Group. Direct professional inquiries to LinkedIn or GitHub.
@@ -9,5 +8,3 @@
     - links.md
   fallback:
     - fallback.md
-...
-
