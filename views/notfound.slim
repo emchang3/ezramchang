@@ -1,9 +1,8 @@
 doctype html
 html[amp]
-    == slim :"global_partials/head",
-            locals: { title: title, style: style, url: url }
-    body
-        div#not-found
-            div.fof 404
-            h1 Content not found.
-
+  == slim :"global_partials/head",
+    locals: { title: title, style: style, url: url }
+  body
+    div#not-found
+      div.fof 404
+      h1 Content not found.

@@ -1,13 +1,13 @@
 doctype html
 html[amp lang="en-US"]
-    == slim :"global_partials/head",
-            locals: { description: description, title: title, style: style, url: url }
-    body
-        .main
-            - content.each_with_index do |part, i|
-                div[id="content-#{i}" class="content"]
-                    == part
-            noscript
-                - fallback.each_with_index do |part, i|
-                    div[id="fallback-#{i}"]
-                        == part
+  == slim :"global_partials/head",
+    locals: { description: description, title: title, style: style, url: url }
+  body
+    .main
+      - content.each_with_index do |part, i|
+        div[id="content-#{i}" class="content"]
+          == part
+      noscript
+        - fallback.each_with_index do |part, i|
+          div[id="fallback-#{i}"]
+            == part

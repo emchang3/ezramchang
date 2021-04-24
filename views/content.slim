@@ -1,12 +1,11 @@
 doctype html
 html[amp]
-    == slim :"global_partials/head",
-            locals: { title: title, style: style, url: url }
-    body
-        h1.content = title
-        == slim :"content_partials/pagination",
-            locals: { page: page, pages: pages, pageUrls: pageUrls }
-        - for post in content
-            section.content
-                == post
-
+  == slim :"global_partials/head",
+    locals: { title: title, style: style, url: url }
+  body
+    h1.content = title
+    == slim :"content_partials/pagination",
+      locals: { page: page, pages: pages, pageUrls: pageUrls }
+    - for post in content
+      section.content
+        == post
