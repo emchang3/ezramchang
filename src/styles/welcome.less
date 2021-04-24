@@ -1,44 +1,63 @@
 @import "_common";
 
-html, body {
-    .base-page;
+html,
+body {
+  .base-page;
 }
 
 .main {
-    @center-vert();
-    @full-page();
+  @center-vert();
+  @full-page();
 
-    h1 {
-        @fs2-5();
-        @fw300();
-        @std-margin();
+  h1 {
+    @fs2-5();
+    @fw300();
+    @std-margin();
 
-        border-bottom: 1px solid grey;
-        padding-bottom: 0.2em;
-        text-align: center;
+    border-bottom: 1px solid grey;
+    padding-bottom: 0.2em;
+    text-align: center;
+  }
+
+  .content {
+    p {
+      @std-margin();
+
+      padding-top: 1em;
+      text-align: center;
+    }
+  }
+
+  #content-0 {
+    p:last-child {
+      padding-top: 0.5em;
+    }
+  }
+
+  #content-1,
+  #fallback-0 {
+    display: flex;
+
+    p {
+      @std-margin();
+
+      padding-right: 1em;
     }
 
-    #content-0 {
-        padding-bottom: 1em;
+    p:last-child {
+      padding-right: 0;
     }
+  }
 
-    #content-1, #fallback-0 {
-        display: flex;
-
-        p {
-            @std-margin();
-
-            padding-right: 1em;
-        }
-
-        p:last-child {
-            padding: 0;
-        }
+  #fallback-0 {
+    img {
+      width: 48px;
     }
+  }
 
-    #fallback-0 {
-        img {
-            width: 48px;
-        }
+  noscript {
+    p {
+      padding-top: 0;
     }
+  }
 }

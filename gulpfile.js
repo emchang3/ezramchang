@@ -34,4 +34,3 @@ gulp.task("default", gulp.series("shrink", function() {
     
     gulp.watch(lessFiles).on("change", shrink);
 }));
-

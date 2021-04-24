@@ -1,6 +1,5 @@
 ---
--
-  file: custom
+- file: custom
   name: CustomController
   path: /
 # -
@@ -11,5 +10,3 @@
 #   file: search
 #   name: SearchController
 #   path: /search
-...
-
