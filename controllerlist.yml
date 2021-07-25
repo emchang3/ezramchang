@@ -2,10 +2,9 @@
 - file: custom
   name: CustomController
   path: /
-# -
-#   file: content
-#   name: ContentController
-#   path: /content
+- file: content
+  name: ContentController
+  path: /blog
 # -
 #   file: search
 #   name: SearchController

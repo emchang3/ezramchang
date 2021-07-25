@@ -42,6 +42,10 @@ class SearchController < Sinatra::Base
   end
 
   not_found do
-    slim :notfound, locals: { **ContentHelpers.nf_404, url: request.url }
+    slim :notfound, locals: {
+      **ContentHelpers.nf_404,
+      description: 'Lost the plot, have you?',
+      url: request.url
+    }
   end
 end
