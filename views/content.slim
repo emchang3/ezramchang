@@ -1,7 +1,7 @@
 doctype html
 html[amp]
   == slim :"global_partials/head",
-    locals: { title: title, style: style, url: url }
+    locals: { title: title, description: description, style: style, url: url }
   body
     h1.content = title
     == slim :"content_partials/pagination",
@@ -9,3 +9,5 @@ html[amp]
     - for post in content
       section.content
         == post
+    == slim :"content_partials/pagination",
+      locals: { page: page, pages: pages, pageUrls: pageUrls }
